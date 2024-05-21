@@ -20,5 +20,6 @@
     "moment": "^2.29.4",
     "readline-sync": "^1.4.10",
     "request": "^2.88.2"
-  }
+  },
+  "engines":{ "node": "16.x.x" }
 }

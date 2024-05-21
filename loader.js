@@ -3,43 +3,43 @@ const { promisify } = require("util");
 const globPromise = promisify(glob);
 const path = require("path"); // Path
 const fs = require("fs"); // File System
-const { Client, GatewayIntentBits, Partials, Collection, Discord } = require("discord.js"); // Discord.js V14
+const { Client, Intents, Partials, Collection, Discord } = require("discord.js"); // Discord.js V14
 
-  module.exports = function(client) {
+module.exports = function(client) {
     client.discord = Discord;
     client.commands = new Collection();
     client.slashCommands = new Collection();
 
-
     client.on("interactionCreate", async (interaction) => {
         if (interaction.isCommand()) {
             const command = client.slashCommands.get(interaction.commandName);
-            if (!command) return interaction.followUp({ content: 'an Erorr' });
+            if (!command) return interaction.followUp({ content: 'an Error' });
 
             const args = [];
 
             for (let option of interaction.options.data) {
-            if (option.type === 'SUB_COMMAND') {
-                if (option.name) args.push(option.name);
-                option.options?.forEach(x =>  {
-                    if (x.value) args.push(x.value);
-                });
-            } else if (option.value) args.push(option.value);
-            } try {
-            command.run(client, interaction)
+                if (option.type === 'SUB_COMMAND') {
+                    if (option.name) args.push(option.name);
+                    option.options?.forEach(x =>  {
+                        if (x.value) args.push(x.value);
+                    });
+                } else if (option.value) args.push(option.value);
+            } 
+            try {
+                command.run(client, interaction);
             } catch (e) {
-            interaction.followUp({ content: e.message });
+                interaction.followUp({ content: e.message });
             }
         }
     });
 
     handler(client);
     async function handler(client) {
-    const slashCommands = await globPromise(
-        `${process.cwd()}/commands/*.js`
-    );
+        const slashCommands = await globPromise(
+            `${process.cwd()}/commands/*.js`
+        );
 
-    const arrayOfSlashCommands = [];
+        const arrayOfSlashCommands = [];
         slashCommands.map((value) => {
             const file = require(value);
             if (!file.name) return;
@@ -50,4 +50,4 @@ const { Client, GatewayIntentBits, Partials, Collection, Discord } = require("di
             await client.application.commands.set(arrayOfSlashCommands).catch(console.error);
         });
     }
-  }
+}

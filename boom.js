@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require("discord.js");
 const smsBomber = require("../modules/sms.js");
 
-module.exports = { 
+module.exports = {
     name: "cesurbomber",
     usage: "/cesurbomber <numara> <miktar>",
     options: [
@@ -18,11 +18,11 @@ module.exports = {
             required: true
         }
     ],
-    category: "Bot", 
+    category: "Bot",
     description: "Cesur Bomber",
     run: async (client, interaction) => {
         // Sadece belirli bir kanalda komutun kullanılmasını sağlama
-        if (interaction.channel.id !== "1241771602039934987") {
+        if (interaction.channelId !== "1241771602039934987") {
             return interaction.reply({ content: "Bu komut sadece belirli bir kanalda kullanılabilir.", ephemeral: true });
         }
         
@@ -64,4 +64,4 @@ module.exports = {
             }
         }, 5000);
     }
-}
+};
